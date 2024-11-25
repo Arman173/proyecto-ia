@@ -1,0 +1,2 @@
+# Poke Vs
+Este proyecto para la materia IA, su principal objetivo es el poder predecir quien ganará en una batalla pokemon 1 vs 1, cabe aclarar que es una aproximacion tomando en cuenta las caracteristicas del pokemon, en la realidad, esto puede determinarse por la habilidad del entrenador (jugador).
