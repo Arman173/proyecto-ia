@@ -23,6 +23,9 @@ type_chart = {
 
 # Función para calcular el factor de tipo
 def type_factor(types1, types2):
+    if (types1[0] not in type_chart or types1[1] not in type_chart) or (types2[0] not in type_chart or types2[1] not in type_chart):
+        print("Error hay un tipo invalido....")
+        return -1, -1
     af = 0
     df = 0
     for i in range(2):
