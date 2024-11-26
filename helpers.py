@@ -24,10 +24,10 @@ type_chart = {
 # Función para calcular el factor de tipo
 def type_factor(types1, types2):
     if (types1[0] not in type_chart or types1[1] not in type_chart) or (types2[0] not in type_chart or types2[1] not in type_chart):
-        print("Error hay un tipo invalido....")
+        print("Error hay un tipo invalido....", types1, types2)
         return -1, -1
-    af = 0
-    df = 0
+    af = 1
+    df = 1
     for i in range(2):
         for j in range(2):
             af += type_chart[types1[i]][types2[j]]
@@ -37,6 +37,11 @@ def type_factor(types1, types2):
 
     return factor1, factor2
 
+def normalize_tf(tp1, tp2):
+    f1, f2 = type_factor(tp1, tp2)
+    # return f1 / f2
+    return f1 - f2
+
 # Ejemplo de uso
 types1 = ["Fire", "None"]  # Charmander
 types2 = ["Water", "None"]   # Squirtle
@@ -44,5 +49,9 @@ types2 = ["Water", "None"]   # Squirtle
 print("Charmander",type_chart[types1[0]][types2[0]],"Squirtle",type_chart[types2[0]][types1[0]])
 
 ft_pk1, ft_pk2 = type_factor(types1, types2)
+n_tf = normalize_tf(types1, types2)
+
+# imprimimos resultados
 print(f"Factor de tipo de Pokémon 1 (Charmander): {ft_pk1}")
 print(f"Factor de tipo de Pokémon 2 (Squirtle): {ft_pk2}")
+print(f"Factor de tipo de Pokémon 1 y Pokemon 2 normalizado: {n_tf}")
