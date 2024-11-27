@@ -1,3 +1,5 @@
+import pandas as pd
+
 # Diccionario de efectividad de tipos (Generación 8)
 type_chart = {
     "Normal": {"Normal": 1, "Fire": 1, "Water": 1, "Grass": 1, "Electric": 1, "Ice": 1, "Fighting": 2, "Poison": 1, "Ground": 1, "Flying": 1, "Psychic": 1, "Bug": 1, "Rock": 0.5, "Ghost": 0, "Dragon": 1, "Dark": 1, "Steel": 0.5, "Fairy": 1, "None": 0},
@@ -41,6 +43,19 @@ def normalize_tf(tp1, tp2):
     f1, f2 = type_factor(tp1, tp2)
     # return f1 / f2
     return f1 - f2
+
+# Normaliza las columnas seleccionadas de un DataFrame en un rango definido.
+def normalize_columns(df: pd.DataFrame, columns, min_val=-10.0, max_val=10.0):
+    df_normalized = df.copy()  # Crear una copia del DataFrame para no modificar el original
+
+    for col in columns:
+        col_min = df[col].min()  # Valor mínimo de la columna
+        col_max = df[col].max()  # Valor máximo de la columna
+        
+        # Normalizar la columna a [min_val, max_val]
+        df_normalized[col] = ((df[col] - col_min) / (col_max - col_min)) * (max_val - min_val) + min_val
+
+    return df_normalized
 
 # Ejemplo de uso
 types1 = ["Fire", "None"]  # Charmander
