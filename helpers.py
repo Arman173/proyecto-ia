@@ -57,6 +57,34 @@ def normalize_columns(df: pd.DataFrame, columns, min_val=-10.0, max_val=10.0):
 
     return df_normalized
 
+def preprocess_pokemon_data(pokemon_df):
+    """
+    Preprocesar los datos de Pokémon:
+    - Rellenar valores NaN en 'Type 2' con 'None'.
+    - Codificar 'Legendary' como binario.
+    - Eliminar la columna 'Generation'.
+    """
+    pokemon_df["Type 2"].fillna("None", inplace=True)
+    pokemon_df["Legendary"] = pokemon_df["Legendary"].astype(int)
+    pokemon_df.drop(["Generation"], axis=1, inplace=True)
+    return pokemon_df
+
+def get_pokemon_types(pokemon_df, pokemon_id):
+    """
+    Obtener los tipos de un Pokémon dado su ID.
+    """
+    pokemon = pokemon_df[pokemon_df["#"] == pokemon_id]
+    if pokemon.empty:
+        print(f"Error: Pokémon con ID {pokemon_id} no encontrado.")
+        return None, None
+    return pokemon["Type 1"].values[0], pokemon["Type 2"].values[0]
+
+def update_winner_column(battles_df):
+    """
+    Modificar la columna 'Winner' para asignar 1 o 0 según el ganador.
+    """
+    battles_df["Winner"] = battles_df.apply(lambda row: 1 if row["First_pokemon"] == row["Winner"] else 0, axis=1)
+
 # Ejemplo de uso
 types1 = ["Fire", "None"]  # Charmander
 types2 = ["Water", "None"]   # Squirtle

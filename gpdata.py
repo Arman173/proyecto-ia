@@ -6,19 +6,6 @@
 import pandas as pd
 import helpers as hp
 
-# Cargar los datos de Pokémon y los combates
-pokemon_df = pd.read_csv("datasets/pokemon.csv")
-battles_df = pd.read_csv("datasets/combats.csv")
-
-# Reemplazar valores NaN en "Type 2" con "None"
-pokemon_df["Type 2"].fillna("None", inplace=True)
-
-# Codificar "Legendary" como binaria
-pokemon_df["Legendary"] = pokemon_df["Legendary"].astype(int)
-
-# Eliminamos la columna de generaciones (no aportara nada al proyecto)
-pokemon_df.drop(["Generation"], axis=1, inplace=True)
-
 # Calcular el type_factor para cada combate
 def get_type_factor(row):
     # Obtener los tipos del Pokémon 1 y 2 de los DataFrames por ID
@@ -61,6 +48,12 @@ def get_stat_differences(row):
         "Legendary_diff": stat_diff[6]
     }
 
+# Cargar los datos de Pokémon y los combates
+pokemon_df = pd.read_csv("datasets/pokemon.csv")
+battles_df = pd.read_csv("datasets/combats.csv")
+
+pokemon_df = hp.preprocess_pokemon_data(pokemon_df)
+
 # Aplicar la función para obtener el type_factor en cada combate
 battles_df["type_factor"] = battles_df.apply(get_type_factor, axis=1)
 
@@ -72,7 +65,7 @@ battles_df = pd.concat([battles_df, pd.DataFrame(stat_diff_df.tolist())], axis=1
 
 # Modificar la columna 'Winner'
 # Si First_pokemon ganó, asignamos 1, si Second_pokemon ganó, asignamos 0
-battles_df["Winner"] = battles_df.apply(lambda row: 1 if row["First_pokemon"] == row["Winner"] else 0, axis=1)
+hp.update_winner_column(battles_df)
 
 # Normalizamos los datos (estadisticas) en un rango de [-10.0, 10.0]
 columns_to_normalize = ["type_factor","HP_diff","Attack_diff","Defense_diff","Sp_Atk_diff","Sp_Def_diff","Speed_diff","Legendary_diff"]
