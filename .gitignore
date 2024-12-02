@@ -1,3 +1,4 @@
 /datasets/combat_train.csv
 /__pycache__
 /data/*.png
+/models/*.keras

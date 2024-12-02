@@ -23,8 +23,8 @@ Y_train, Y_test = Y[:-5000], Y[-5000:]  # Últimos 2500 etiquetas como prueba
 print(X.shape, Y.shape)
 
 # Definimos nuestras capas
-capa1 = tf.keras.layers.Dense(units=16, input_shape=[8], activation='tanh', kernel_regularizer=tf.keras.regularizers.L2(0.0000307))
-capa2 = tf.keras.layers.Dense(units=8, activation='sigmoid', kernel_regularizer=tf.keras.regularizers.L2(0.0000346))
+capa1 = tf.keras.layers.Dense(units=9, input_shape=[8], activation='tanh', kernel_regularizer=tf.keras.regularizers.L2(0.00002307))
+capa2 = tf.keras.layers.Dense(units=8, activation='sigmoid')
 capa3 = tf.keras.layers.Dense(units=1, activation='sigmoid')
 
 # Definimos nuestro modelo
@@ -36,7 +36,7 @@ modelo = tf.keras.Sequential([
 ])
 
 modelo.compile(
-    optimizer=tf.keras.optimizers.Adam(0.0012),
+    optimizer=tf.keras.optimizers.Adam(0.000437),
     loss='binary_crossentropy',
     metrics=['accuracy']
 )
@@ -51,7 +51,7 @@ reduce_lr = tf.keras.callbacks.ReduceLROnPlateau(
 # Configuración del EarlyStopping desde tf.keras
 early_stopping = tf.keras.callbacks.EarlyStopping(
     monitor='val_loss',  # Métrica a monitorear (puedes cambiarla por 'val_accuracy')
-    patience=500,  # Número de épocas sin mejora antes de detener
+    patience=300,  # Número de épocas sin mejora antes de detener
     restore_best_weights=True,  # Restaura los pesos de la mejor época
     verbose=1  # Muestra mensajes en la consola
 )
@@ -66,6 +66,9 @@ historial = modelo.fit(X_train, Y_train,
                        callbacks=[reduce_lr, early_stopping]
                     )
 print('Entrenamiento completado.')
+
+# guardamos el modelo
+modelo.save('./models/model.keras')
 
 # Evaluar precisión en datos de prueba
 loss, accuracy = modelo.evaluate(X_test, Y_test)
