@@ -68,8 +68,8 @@ battles_df = pd.concat([battles_df, pd.DataFrame(stat_diff_df.tolist())], axis=1
 hp.update_winner_column(battles_df)
 
 # Normalizamos los datos (estadisticas) en un rango de [-10.0, 10.0]
-columns_to_normalize = ["type_factor","HP_diff","Attack_diff","Defense_diff","Sp_Atk_diff","Sp_Def_diff","Speed_diff","Legendary_diff"]
-battles_df = hp.normalize_columns(battles_df, columns_to_normalize, min_val=-10.0, max_val=10.0)
+# columns_to_normalize = ["HP_diff","Attack_diff","Defense_diff","Sp_Atk_diff","Sp_Def_diff","Speed_diff","Legendary_diff"]
+# battles_df = hp.normalize_columns(battles_df, columns_to_normalize, min_val=-10.0, max_val=10.0)
 
 # Guardamos los datos para su uso en la red neuronal de batallas
 battles_df.to_csv("datasets/combat_train.csv", index=False)
